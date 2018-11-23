@@ -3,6 +3,8 @@ const jwt = require('jsonwebtoken') //npm install jsonwebtoken --save
 const router = express.Router()
 const User = require('../models/user')
 const mongoose = require('mongoose') //npm install --save mongoose
+const bcrypt = require('bcrypt') //npm install bcrypt --save
+const path = require('path')
 const db = "mongodb://miloye:miloye11@ds155663.mlab.com:55663/hoteldb"
 const key = "asjbfa..6sofgb--+nadsg55.4165.41654gw5bv1*/45c1b5"
 
@@ -30,9 +32,21 @@ function verifyToken(req, res, next){
     next()
 }
 
+router.get('/', function (req, res) {
+    res.render(path.join(__dirname + '../../dist/ngApp/index.html'));
+  });
+
 router.post('/add', (req, res) => {
-    let userData = req.body
-    let user = new User(userData)
+    let user = new User()
+
+    user.name = req.body.name
+    user.surname = req.body.surname
+    user.email = req.body.email
+    user.password = req.body.password
+
+    let hash = bcrypt.hashSync(user.password, 10)
+
+    user.password = hash
 
     user.save((err, registeredUser) => {
         if(err){
@@ -46,14 +60,19 @@ router.post('/add', (req, res) => {
 })
 
 router.post('/login', (req, res) => {
-    let userData = req.body
+    let userData = new User()
+
+    userData.email = req.body.email
+    userData.password = req.body.password
+
+    let hash = bcrypt.hashSync(userData.password, 10)
 
     User.findOne({email: userData.email}, (error, user) => {
         if(error){
             console.log(error)
         }else if(!user){
             res.status(401).send('Wrong email or password')
-        }else if(user.password !== userData.password){
+        }else if(bcrypt.compareSync(user.password, hash)){
             res.status(401).send('Wrong email or password')
         }else{
             let payload = {subject: user._id}
@@ -63,7 +82,7 @@ router.post('/login', (req, res) => {
     })
 })
 
-router.get('/getall', (req, res) => {
+router.get('/getall',verifyToken, (req, res) => {
     User.find({}, (err, registeredUsers) => {
         if(err){
             console.log(err)

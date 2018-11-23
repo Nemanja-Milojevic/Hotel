@@ -1,16 +1,26 @@
 {
+  "engines": {
+    "node": "11.1.0",
+    "npm": "6.4.1"
+  },
   "name": "ng-app",
   "version": "0.0.0",
   "scripts": {
+    "postinstall": "ng build --aot --prod",
     "ng": "ng",
-    "start": "ng serve",
+    "appstart": "ng serve",
+    "serverstart": "node server/server",
+    "start": "npm run serverstart | npm run appstart",
     "build": "ng build",
     "test": "ng test",
     "lint": "ng lint",
     "e2e": "ng e2e"
   },
   "private": true,
-  "dependencies": {
+  "dependencies": {    
+    "@angular-devkit/build-angular": "~0.10.0",
+    "@angular/cli": "~7.0.4",
+    "@angular/compiler-cli": "~7.0.0",
     "@angular/animations": "^7.0.4",
     "@angular/cdk": "^7.1.0",
     "@angular/common": "~7.0.0",
@@ -24,7 +34,8 @@
     "@nebular/theme": "^3.0.0",
     "core-js": "^2.5.4",
     "rxjs": "~6.3.3",
-    "zone.js": "~0.8.26"
+    "zone.js": "~0.8.26",    
+    "typescript": "~3.1.1"
   },
   "devDependencies": {
     "@angular-devkit/build-angular": "~0.10.0",
