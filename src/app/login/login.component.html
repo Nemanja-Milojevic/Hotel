@@ -1,5 +1,13 @@
 <nb-layout>
-  <nb-layout-header>Awesome Company</nb-layout-header>
-  <nb-layout-column>Hello World!</nb-layout-column>
-  <nb-layout-footer>Contact us</nb-layout-footer>  
+  <nb-layout-header><h2>Login</h2></nb-layout-header>
+  <nb-layout-column class="container">
+    <label><h1>Hotel reservations</h1></label><br><br>
+    <input [(ngModel)] = "loginData.email" name="email" nbInput class="input" placeholder="Username = 'test'"><br>
+    <input [(ngModel)] = "loginData.password" name="password" nbInput class="input" placeholder="Password = 'test'" (keyup.enter) = "loginUser()"><br>
+    <div class="buttons">
+      <button nbButton class="button" (click) = "loginUser()">Login</button>
+      <button nbButton class="button" routerLink = "/register">Register</button>
+    </div>
+  </nb-layout-column>
+  <nb-layout-footer>Contact us</nb-layout-footer>
 </nb-layout>
