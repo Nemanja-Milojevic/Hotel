@@ -11,7 +11,7 @@ const httpOptions = {
 export class AuthService {
 
   // public url = "http://localhost:3000/api/"
-  public url = "https://hotel-crud.herokuapp.com/api/add"
+  public url = "https://hotel-crud.herokuapp.com/api/"
 
   constructor(private http: HttpClient) { }
 
